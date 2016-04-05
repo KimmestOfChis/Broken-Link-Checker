@@ -12,13 +12,8 @@ puts "How many URL's would you like to test?"
 
 testReq = gets.chomp
 
-case testReq 
-when 'all', 'All', 'ALL', 'all of them', 'All of them', 'everyone', 'Everyone', 'every one', 'Every one'
-	testReq = urlTest.length
-when 'none', 'None', 'None of them', 'none of them'
-	testReq = 0
-else
-	puts "please enter a numerical value to run this test!"
+if testReq.to_i == 0 
+	puts "No items to be tested. Check that you've entered a numerical value."
 	abort()
 end
 
