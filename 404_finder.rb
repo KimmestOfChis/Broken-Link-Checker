@@ -118,11 +118,8 @@ else
 	puts "Total time elapsed to run test: #{runTime} seconds."
 end
 
-puts "What is the name of the person you would you like to send the results to?"
+puts "What is the name of the person you'll be sending this to?"
 recipient = gets.chomp
-puts "OK! You'll be sending the results to " +recipient+ " What is their email?"
-email = gets.chomp
-puts "Sending to " +recipient+ " at " + email+ "!"
 
 publishResults = 'Hey ' +recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
 We ran ' + goodURLs.length.to_s + ' URL\'s with this test.
@@ -144,10 +141,10 @@ resultsFile.close
 	def email()
   gmail = Gmail.connect('memjay3279@gmail.com', 'bigemjay2008')
   gmail.deliver do
-    to email
+    to 'mj128508@gmail.com'
     subject "Broken (404) Links Test Results"
     text_part do
-      body "Hey " +recipient+ "! I've attached a file to this email called \"results.txt\" to this email with the results inside. Call me if you have any questions at (740)-248-6734."
+      body "! I've attached a file to this email called \"results.txt\" to this email with the results inside. Call me if you have any questions at (740)-248-6734."
     end
     add_file 'results.txt'
   end
