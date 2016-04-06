@@ -2,6 +2,8 @@ require 'open-uri'
 require 'net/http'
 require 'gmail'
 
+startTime = Time.now
+
 urlFile = File.open('urlFiles.txt', 'r') #ural.txt is the file being used by creator to test the functionality of this code
 
 contents = urlFile.read
@@ -41,7 +43,7 @@ goodURLs.each do |i|
 end
 
 
-puts goodURLs.length.to_s + " URL's are being checked with this test. " + malformedExpressions.length.to_s + " were found to be untestable due to inproper user input. " +dontRun.length.to_s + " were exempted from this test."
+puts goodURLs.length.to_s + " URL's are being checked with this test. " + malformedExpressions.length.to_s + " were found to be untestable due to inproper user input. " + dontRun.length.to_s + " were exempted from this test."
 
 informationalURL = []
 successfulURL = []
@@ -108,7 +110,21 @@ if brokenURL.length == 0
 		puts brokenURL.length.to_s + " item(s) yielded 404 Broken Link Errors!"
 	end
 
-publishResults = 'Hey Dan! I\'ve created the 404 finder as you asked. Here are the results: 
+runTime = Time.now - startTime
+if runTime >= 60
+runMinutes = runTime/ 60
+puts "Total time elapsed to run test: #{runMinutes} minute(s)."
+else
+	puts "Total time elapsed to run test: #{runTime} seconds."
+end
+
+puts "What is the name of the person you would you like to send the results to?"
+recipient = gets.chomp
+puts "OK! You'll be sending the results to " +recipient+ " What is their email?"
+email = gets.chomp
+puts "Sending to " +recipient+ " at " + email+ "!"
+
+publishResults = 'Hey ' +recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
 We ran ' + goodURLs.length.to_s + ' URL\'s with this test.
 There were ' + informationalURL.length.to_s + ' URL\'s were informational in nature. 
 There were ' + successfulURL.length.to_s + ' URL\'s worked as intended. 
@@ -128,10 +144,10 @@ resultsFile.close
 	def email()
   gmail = Gmail.connect('memjay3279@gmail.com', 'bigemjay2008')
   gmail.deliver do
-    to 'mj128508@gmail.com'
-    subject "Broken Links Test"
+    to email
+    subject "Broken (404) Links Test Results"
     text_part do
-      body "Hey (recipient)! I've attached a file to this email called \"results.txt\" to this email with the results inside. Call me if you have any questions at (740)-248-6734."
+      body "Hey " +recipient+ "! I've attached a file to this email called \"results.txt\" to this email with the results inside. Call me if you have any questions at (740)-248-6734."
     end
     add_file 'results.txt'
   end
