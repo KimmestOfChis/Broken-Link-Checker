@@ -139,9 +139,9 @@ resultsFile.puts publishResults
 resultsFile.close
 
 	def email()
-  gmail = Gmail.connect('memjay3279@gmail.com', 'bigemjay2008')
+  gmail = Gmail.connect('email@email.com', 'password')
   gmail.deliver do
-    to 'mj128508@gmail.com'
+    to 'recipient@email.com'
     subject "Broken (404) Links Test Results"
     text_part do
       body "! I've attached a file to this email called \"results.txt\" to this email with the results inside. Call me if you have any questions at (740)-248-6734."
