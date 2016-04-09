@@ -4,7 +4,7 @@ require 'gmail'
 
 startTime = Time.now
 
-urlFile = File.open('urlFiles.txt', 'r') #ural.txt is the file being used by creator to test the functionality of this code
+urlFile = File.open('urlFiles.txt', 'r') #urlFiles.txt is the file being used by creator to test the functionality of this code
 
 contents = urlFile.read
 
