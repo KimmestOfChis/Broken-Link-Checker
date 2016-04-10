@@ -1,3 +1,5 @@
+class BrokenLinkChecker
+def initialize
 require 'open-uri'
 require 'net/http'
 require 'gmail'
@@ -152,3 +154,5 @@ Matthew Johnson'
 end
 
 email()
+end
+end
