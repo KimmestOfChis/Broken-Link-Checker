@@ -52,9 +52,6 @@ clientError = []
 serverError = []
 brokenURL = []
 
-
-
-
 goodURLs.each do |i|
 	uri = URI(i)
 	res = Net::HTTP.get_response(uri)
@@ -72,7 +69,6 @@ else
 	brokenURL.push(i)
 end
 end
-
 
 if informationalURL.length == 0
 	puts "No informational URL's were found."
@@ -118,7 +114,6 @@ else
 	puts "Total time elapsed to run test: #{runTime} seconds."
 end
 
-
 puts "What is your email?"
 $email = gets.chomp
 
@@ -126,12 +121,12 @@ puts "What is your email password? Don't worry! It's our secret!"
 $password = gets.chomp
 
 puts "What is the name of the person you'll be sending this to?"
-$recipient = gets.chomp
+recipient = gets.chomp
 
 puts "What is the recipient's email?"
 $recipientEmail = gets.chomp
 
-$publishResults = 'Hey ' +$recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
+$publishResults = 'Hey ' +recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
 We ran ' + goodURLs.length.to_s + ' URL\'s with this test.
 There were ' + informationalURL.length.to_s + ' URL\'s were informational in nature. 
 There were ' + successfulURL.length.to_s + ' URL\'s worked as intended. 
@@ -144,14 +139,14 @@ Most importantly: There\'s ' + brokenURL.length.to_s + ' in the set you provided
 Matthew Johnson'
 
 	def email()
-  gmail = Gmail.connect($email, $password)
+  gmail = Gmail.connect($email , $password) 
   gmail.deliver do
     to $recipientEmail
     subject "Broken (404) Links Test Results"
     text_part do
       body $publishResults
   end
-   add_file
+   #add_file
    end
   gmail.logout
 end
