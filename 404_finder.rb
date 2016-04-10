@@ -118,10 +118,20 @@ else
 	puts "Total time elapsed to run test: #{runTime} seconds."
 end
 
-puts "What is the name of the person you'll be sending this to?"
-recipient = gets.chomp
 
-publishResults = 'Hey ' +recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
+puts "What is your email?"
+$email = gets.chomp
+
+puts "What is your email password? Don't worry! It's our secret!"
+$password = gets.chomp
+
+puts "What is the name of the person you'll be sending this to?"
+$recipient = gets.chomp
+
+puts "What is the recipient's email?"
+$recipientEmail = gets.chomp
+
+$publishResults = 'Hey ' +$recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
 We ran ' + goodURLs.length.to_s + ' URL\'s with this test.
 There were ' + informationalURL.length.to_s + ' URL\'s were informational in nature. 
 There were ' + successfulURL.length.to_s + ' URL\'s worked as intended. 
@@ -133,21 +143,16 @@ Most importantly: There\'s ' + brokenURL.length.to_s + ' in the set you provided
 'Good day!
 Matthew Johnson'
 
-fileName = 'results.txt'
-resultsFile = File.open(fileName, 'w')
-resultsFile.puts publishResults
-resultsFile.close
-
 	def email()
-  gmail = Gmail.connect('email@email.com', 'password')
+  gmail = Gmail.connect($email, $password)
   gmail.deliver do
-    to 'recipient@email.com'
+    to $recipientEmail
     subject "Broken (404) Links Test Results"
     text_part do
-      body "! I've attached a file to this email called \"results.txt\" to this email with the results inside. Call me if you have any questions at (740)-248-6734."
-    end
-    add_file 'results.txt'
+      body $publishResults
   end
+   add_file
+   end
   gmail.logout
 end
 
