@@ -5,14 +5,12 @@ require 'uri'
 
 pager = []
 
-puts "What site would you like to search?" #add future regex corrections, and REP obeyance 
+puts "What site would you like to index?" #add future regex corrections and REP obeyance 
 $webSite = gets.chomp
 
 $webSite.strip()
 
-$webSite = "http://www.#{$webSite}.com"
-
-
+$webSite = "http://www.#{$webSite}.com" #fix in future
 
 puts "What depth do you want to set this crawler to?"
 depth = gets.chomp
@@ -33,9 +31,9 @@ end
 puts "Test completed at #{Time.now}"
 totalTime = Time.now - startTime
 if totalTime <= 60
-	puts "#{totalTime} seconds elapsed for test."
+	puts "#{totalTime} seconds elapsed for indexing."
 else
-puts "Total elapsed for test: #{totalTime.to_i/60} minutes."
+puts "Total time elapsed for indexing: #{totalTime.to_i/60} minutes."
 end
 
 puts "#{pager.length.to_s} pages indexed."
