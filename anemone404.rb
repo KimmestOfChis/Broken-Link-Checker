@@ -21,7 +21,7 @@ startTime = Time.now
   	puts "Test started at " + startTime.to_s #Start time
 
 
-Anemone.crawl($webSite , :depth_limit => $setDepth) do |anemone|
+Anemone.crawl($webSite , :depth_limit => $setDepth, :obey_robots_txt => true, :threads => 4) do |anemone|
   anemone.on_every_page do |page|
   	puts page.url
 pager.push(page.url)

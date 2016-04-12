@@ -1,5 +1,7 @@
+require './404_finder.rb'
 require 'anemone'
 require 'uri'
+
 
 pager = []
 
@@ -8,7 +10,7 @@ $webSite = gets.chomp
 
 $webSite.strip()
 
-$webSite = "http://www.#{$webSite}.com"
+$webSite = "http://www.#{$webSite}"
 
 
 
@@ -21,7 +23,7 @@ startTime = Time.now
   	puts "Test started at " + startTime.to_s #Start time
 
 
-Anemone.crawl($webSite , :depth_limit => $setDepth) do |anemone|
+Anemone.crawl($webSite , :depth_limit => $setDepth, :obey_robots_txt => true, :threads => 4) do |anemone|
   anemone.on_every_page do |page|
   	puts page.url
 pager.push(page.url)
@@ -43,3 +45,16 @@ fname = 'urlFiles.txt'
 filer = File.open(fname, 'w')
 filer.puts urlSet
 filer.close
+
+puts "Would you like to check indexed pages for response codes and broken links?"
+answer = gets.chomp
+
+case answer
+when "yes", "Yes", "YES", "y", "Y"
+	BrokenLinkChecker.new
+when "No", "no", "NO", "n", "N"
+	puts "Program complete."
+	abort()
+else
+	puts "Please enter yes or no"
+end
