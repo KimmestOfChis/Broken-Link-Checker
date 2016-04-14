@@ -2,7 +2,6 @@ require './404_finder.rb'
 require 'anemone'
 require 'uri'
 
-
 pager = []
 
 puts "What site would you like to index?" #add future regex corrections and REP obeyance 
@@ -21,7 +20,7 @@ startTime = Time.now
   	puts "Test started at " + startTime.to_s #Start time
 
 
-Anemone.crawl($webSite , :depth_limit => $setDepth, :obey_robots_txt => true, :threads => 4) do |anemone|
+Anemone.crawl($webSite , :depth_limit => $setDepth, :obey_robots_txt => true, :threads => 8) do |anemone|
   anemone.on_every_page do |page|
   	puts page.url
 pager.push(page.url)
@@ -37,6 +36,8 @@ puts "Total time elapsed for indexing: #{totalTime.to_i/60} minutes."
 end
 
 puts "#{pager.length.to_s} pages indexed."
+
+pager.uniq
 
 urlSet = pager.join(' ')
 fname = 'urlFiles.txt'
@@ -56,3 +57,4 @@ when "No", "no", "NO", "n", "N"
 else
 	puts "Please enter yes or no"
 end
+
