@@ -9,15 +9,21 @@ testerUrl = "http://webpagetest.org"
 driver = Selenium::WebDriver.for :firefox
 driver.navigate.to testerUrl
 
-element = driver.find_element(:id, 'url')
-element.send_keys myUrl
-element.submit
+driver.find_element(:id, "advanced_settings").click
+numberofTests = driver.find_element(:id, "number_of_tests")
+numberofTests.clear
+numberofTests.send_keys "9"
+driver.find_element(:id, "viewBoth").click
+
+websiteTest = driver.find_element(:id, 'url')
+websiteTest.send_keys myUrl
+websiteTest.submit
 
 url = driver.current_url
 
 wait = Selenium::WebDriver::Wait.new(:timeout => 1000)
 begin
-	element = wait.until { driver.find_element(:css => "#fvLoadTime") }
+	websiteTest = wait.until { driver.find_element(:css => "#fvLoadTime") }
 ensure
 	driver.quit
 end
