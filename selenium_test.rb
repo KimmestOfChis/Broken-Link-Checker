@@ -14,7 +14,14 @@ element.send_keys myUrl
 element.submit
 
 url = driver.current_url
-sleep(50)
+
+wait = Selenium::WebDriver::Wait.new(:timeout => 1000)
+begin
+	element = wait.until { driver.find_element(:css => "#fvLoadTime") }
+ensure
+	driver.quit
+end
+
 data = Nokogiri::HTML(open(url))
 
 #First View Data
@@ -32,6 +39,4 @@ puts data.at_css('#fvRequests').text.strip
 puts data.at_css('#fvBytes').text.strip
 puts data.at_css('#fvCost').text.strip
 
-
-driver.quit
 
