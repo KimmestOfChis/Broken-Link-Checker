@@ -44,7 +44,6 @@ goodURLs.each do |i|
 	i.strip
 end
 
-
 puts goodURLs.length.to_s + " URL's are being checked with this test. " + malformedExpressions.length.to_s + " were found to be untestable due to inproper user input. " + dontRun.length.to_s + " were exempted from this test."
 
 informationalURL = []
@@ -123,18 +122,18 @@ puts "What is your email password? Don't worry! It's our secret!"
 $password = gets.chomp
 
 puts "What is the name of the person you'll be sending this to?"
-recipient = gets.chomp
+$recipient = gets.chomp
 
 puts "What is the recipient's email?"
 $recipientEmail = gets.chomp
 
-$publishResults = 'Hey ' +recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
+$publishResults = 'Hey ' +$recipient+ '! I\'ve created the 404 finder as you asked. Here are the results: 
 We ran ' + goodURLs.length.to_s + ' URL\'s with this test.
 There were ' + informationalURL.length.to_s + ' URL\'s were informational in nature. 
 There were ' + successfulURL.length.to_s + ' URL\'s worked as intended. 
 There were ' + redirectionURL.length.to_s + ' URL\'s redirected to some other site.
 There were ' + clientError.length.to_s + ' URL\'s that were not functional due to client side errors.
-There were ' + serverError.length.to_s + ' URL\'s that were not functional due to server side errorss.
+There were ' + serverError.length.to_s + ' URL\'s that were not functional due to server side errors.
 Most importantly: There\'s ' + brokenURL.length.to_s + ' in the set you provided. Here are the 404 error URL\'s: ' + brokenURL.to_s +
 
 'Good day!
@@ -156,3 +155,5 @@ end
 email()
 end
 end
+
+BrokenLinkChecker.new

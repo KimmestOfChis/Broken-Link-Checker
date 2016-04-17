@@ -1,10 +1,10 @@
-require './404_finder.rb'
+
 require 'anemone'
 require 'uri'
 
 pager = []
 
-puts "What site would you like to index?" #add future regex corrections and REP obeyance 
+puts "What site would you like to index?"
 $webSite = gets.chomp
 
 $webSite.strip()
@@ -50,6 +50,7 @@ answer = gets.chomp
 
 case answer
 when "yes", "Yes", "YES", "y", "Y"
+	require './404_finder.rb'
 	BrokenLinkChecker.new
 when "No", "no", "NO", "n", "N"
 	puts "Program complete."
