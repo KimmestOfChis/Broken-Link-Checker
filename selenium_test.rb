@@ -2,12 +2,26 @@ require 'selenium-webdriver'
 require 'nokogiri'
 require 'open-uri'
 require 'gmail'
+require 'spreadsheet'
 
 urlFile = File.open('urlFiles.txt', 'r')
 contents = urlFile.read
-myUrl = contents.split(' ')
+$myUrl = contents.split(' ')
 
-myUrl.each do |site|
+$siteName = []
+$loadTime = []
+$firstByte = []
+$startRender = []
+$numdomElements = []
+$docComplete = []
+$requests = []
+$bytesIn = []
+$fullyLoaded = []
+$flRequests = []
+$flBytesin = []
+$cost = []
+
+$myUrl.each do |site|
 
 driver = Selenium::WebDriver.for :firefox
 driver.navigate.to "http://webpagetest.org"
@@ -31,38 +45,49 @@ begin
 	websiteTest = wait.until { driver.find_element(:css => "#fvLoadTime") }
 end
 
-
 data = Nokogiri::HTML(open(currentUrl))
-$loadTime = data.at_css('#fvLoadTime').text.strip
-$firstByte = data.at_css('#fvTTFB').text.strip
-$startRender = data.at_css('#fvStartRender').text.strip
-#$speedIndex =('#fvVisual').text.strip     Not sure what is going on, will return to later... Seems this data point is not available on everytest...
-$numdomElements = data.at_css('#fvDomElements').text.strip
-$docComplete = data.at_css('#fvDocComplete').text.strip
-$requests = data.at_css('#fvRequestsDoc').text.strip
-$bytesIn = data.at_css('#fvBytesDoc').text.strip
-$fullyLoaded = data.at_css('#fvFullyLoaded').text.strip
-$flRequests = data.at_css('#fvRequests').text.strip
-$flBytesin = data.at_css('#fvBytes').text.strip
-$cost = data.at_css('#fvCost').text.strip
 
-pageResults = "For #{site}, 
-	\n Load Time: #{$loadTime}.
-	\n First Byte: #{$firstByte}
-	\n Start Render: #{$startRender}
-	\n DOM Elements: #{$numdomElements}
-	\n Document Complete Time: #{$docComplete}
-	\n Document Complete Requests: #{$requests}
-	\n Bytes In: #{$bytesIn}
-	\n Fully Loaded Time #{$fullyLoaded}
-	\n Fully Loaded Requests: #{$flRequests}
-	\n Fully Loaded Bytes In: #{$flBytesin}
-	\n Cost: #{$cost}"
+$siteName.push(site)
+$loadTime.push(data.at_css('#fvLoadTime').text.strip)
+$firstByte.push(data.at_css('#fvTTFB').text.strip)
+$startRender.push(data.at_css('#fvStartRender').text.strip)
+$numdomElements.push(data.at_css('#fvDomElements').text.strip)
+$docComplete.push(data.at_css('#fvDocComplete').text.strip)
+$requests.push(data.at_css('#fvRequestsDoc').text.strip)
+$bytesIn.push(data.at_css('#fvBytesDoc').text.strip)
+$fullyLoaded.push(data.at_css('#fvFullyLoaded').text.strip)
+$flRequests.push(data.at_css('#fvRequests').text.strip)
+$flBytesin.push(data.at_css('#fvBytes').text.strip)
+$cost.push(data.at_css('#fvCost').text.strip)
 
 
-puts pageResults
-
+driver.quit
 end
+
+zipMe = $loadTime.zip($firstByte, $startRender, $numdomElements, $docComplete, $requests, $bytesIn, $fullyLoaded, $flRequests, $flBytesin, $cost)
+hash = Hash[$siteName.zip(zipMe)]
+
+puts hash
+
+book = Spreadsheet::Workbook.new
+sheet1 = book.create_worksheet :name => 'First Performance Report'
+
+hash.each do |site, array|
+  sheet1.row(0).push site
+  sheet1.row(1).push array[0]
+  sheet1.row(2).push array[1]
+  sheet1.row(3).push array[2]
+  sheet1.row(4).push array[3]
+  sheet1.row(5).push array[4]
+  sheet1.row(6).push array[5]
+  sheet1.row(7).push array[6]
+  sheet1.row(8).push array[7]
+  sheet1.row(9).push array[8]
+  sheet1.row(10).push array[9]
+  sheet1.row(11).push array[10]
+end
+
+book.write '/Users/matthewjohnson/Documents/projects/404projects/firstptest.xls'
 
 #puts "What is the sender email?"
 #$email = gets.chomp
@@ -72,20 +97,3 @@ end
 
 #puts "Who are you sending this email to?"
 #$recipientEmail = gets.chomp
-
-puts $scraperResults
-
-def email()
-  gmail = Gmail.connect('memjay3279@gmail.com' , 'bigemjay2008') 
-  gmail.deliver do
-    to 'joshkempcoaching@gmail.com'
-    subject "Scraper Results"
-    text_part do
-      body "Hey Josh, this is a really crude printout of the results. I'll have something much prettier soon! " + $scraperResults
-  end
-   #add_file
-   end
-  gmail.logout
-end 
-
-email()
