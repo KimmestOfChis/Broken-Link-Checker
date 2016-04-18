@@ -39,7 +39,7 @@ websiteTest.submit
 
 currentUrl = driver.current_url
 
-wait = Selenium::WebDriver::Wait.new(:timeout => 1000)
+wait = Selenium::WebDriver::Wait.new(:timeout => 100000)
 
 begin
 	websiteTest = wait.until { driver.find_element(:css => "#fvLoadTime") }
@@ -72,19 +72,21 @@ puts hash
 book = Spreadsheet::Workbook.new
 sheet1 = book.create_worksheet :name => 'First Performance Report'
 
+
+
 hash.each do |site, array|
-  sheet1.row(0).push site
-  sheet1.row(1).push array[0]
-  sheet1.row(2).push array[1]
-  sheet1.row(3).push array[2]
-  sheet1.row(4).push array[3]
-  sheet1.row(5).push array[4]
-  sheet1.row(6).push array[5]
-  sheet1.row(7).push array[6]
-  sheet1.row(8).push array[7]
-  sheet1.row(9).push array[8]
-  sheet1.row(10).push array[9]
-  sheet1.row(11).push array[10]
+  sheet1.row(1).push site
+  sheet1.row(2).push array[0]
+  sheet1.row(3).push array[1]
+  sheet1.row(4).push array[2]
+  sheet1.row(5).push array[3]
+  sheet1.row(6).push array[4]
+  sheet1.row(7).push array[5]
+  sheet1.row(8).push array[6]
+  sheet1.row(9).push array[7]
+  sheet1.row(10).push array[8]
+  sheet1.row(12).push array[9]
+  sheet1.row(12).push array[10]
 end
 
 book.write '/Users/matthewjohnson/Documents/projects/404projects/firstptest.xls'
