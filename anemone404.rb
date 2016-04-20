@@ -37,7 +37,7 @@ end
 
 puts "#{pager.length.to_s} pages indexed."
 
-pager.uniq
+pager.uniq #eliminates duplicates
 
 urlSet = pager.join(' ')
 fname = 'urlFiles.txt'
