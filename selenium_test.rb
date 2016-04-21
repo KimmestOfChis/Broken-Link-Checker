@@ -8,6 +8,8 @@ urlFile = File.open('urlFiles.txt', 'r')
 contents = urlFile.read
 $myUrl = contents.split(' ')
 
+puts "#{$myUrl.length} URL's will be run through this program. This will take some time..."
+
 $siteName = []
 $loadTime = []
 $firstByte = []
@@ -28,7 +30,8 @@ driver.navigate.to "http://webpagetest.org"
 
 driver.find_element(:id, "advanced_settings").click
 numberofTests = driver.find_element(:id, "number_of_tests")
-numberofTests.clear
+numberofTests.click
+numberofTests.clear #clears the default text in the form so that the site properly runs the URL
 numberofTests.send_keys "9"
 driver.find_element(:id, "viewBoth").click
 
@@ -42,7 +45,7 @@ currentUrl = driver.current_url
 wait = Selenium::WebDriver::Wait.new(:timeout => 100000)
 
 begin
-	websiteTest = wait.until { driver.find_element(:css => "#fvLoadTime") }
+  websiteTest = wait.until { driver.find_element(:css => "#fvLoadTime") }
 end
 
 data = Nokogiri::HTML(open(currentUrl))
@@ -67,8 +70,6 @@ end
 zipMe = $loadTime.zip($firstByte, $startRender, $numdomElements, $docComplete, $requests, $bytesIn, $fullyLoaded, $flRequests, $flBytesin, $cost)
 hash = Hash[$siteName.zip(zipMe)]
 
-puts hash
-
 book = Spreadsheet::Workbook.new
 sheet1 = book.create_worksheet :name => 'First Performance Report'
 
@@ -89,13 +90,45 @@ hash.each do |site, array|
   sheet1.row(12).push array[10]
 end
 
+hash.each do |site, item|
+  $stuff = "For site: #{site}, \n
+ Load Time: #{item[0]} | First Byte: #{item[1]} | Start Render Time: #{item[2]} | Number of DOM Elements: #{item[3]}\n
+ Document Complete Time: #{item[4]} | Document Complete Requests: #{item[5]} | Document Complete Bytes In: #{item[6]}\n
+ Fully Loaded Time: #{item[7]} | Fully Loaded Requests: #{item[8]} | Fully Loaded Bytles In: #{item[9]} | Cost:#{item[10]}\n"
+  end
+   
+ 
+
 book.write '/Users/matthewjohnson/Documents/projects/404projects/firstptest.xls'
 
-#puts "What is the sender email?"
-#$email = gets.chomp
+puts "What is your email?"
+$email = gets.chomp
 
-#puts "What is the sender email's password?"
-#$password = gets.chomp
+puts "What is your password?"
+$password = gets.chomp
 
-#puts "Who are you sending this email to?"
-#$recipientEmail = gets.chomp
+puts "What is the name of the person you're sending this email to?"
+recipient = gets.chomp
+
+puts "What is the email address you're sending this to?"
+$recipientEmail = gets.chomp
+
+$body = "Hey #{recipient}! I ran the Web Page Performance Data Extractor for #{hash.length} URL's. The results are as follows: \n " +$stuff+ "
+\n Sincerely, \n
+Matthew A. Johnson"
+
+def email()
+  gmail = Gmail.connect($email , $password)
+  gmail.deliver do
+    to $recipientEmail
+    subject "Web Page Performance Data Extractor Results"
+    text_part do
+      body $body
+    end
+    #add_file 'results.txt'
+  end
+  gmail.logout
+end
+
+email()
+

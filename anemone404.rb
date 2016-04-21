@@ -1,4 +1,4 @@
-
+require './404_finder.rb'
 require 'anemone'
 require 'uri'
 
@@ -50,7 +50,6 @@ answer = gets.chomp
 
 case answer
 when "yes", "Yes", "YES", "y", "Y"
-	require './404_finder.rb'
 	BrokenLinkChecker.new
 when "No", "no", "NO", "n", "N"
 	puts "Program complete."
@@ -58,4 +57,3 @@ when "No", "no", "NO", "n", "N"
 else
 	puts "Please enter yes or no"
 end
-
