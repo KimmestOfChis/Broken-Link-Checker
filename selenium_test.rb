@@ -8,7 +8,7 @@ urlFile = File.open('urlFiles.txt', 'r')
 contents = urlFile.read
 $myUrl = contents.split(' ')
 
-puts "#{$myUrl.length} URL's will be run through this program. This will take some time..."
+puts "URL's running through this script: #{$myUrl.length}"
 
 $siteName = []
 $loadTime = []
@@ -49,6 +49,12 @@ begin
 end
 
 data = Nokogiri::HTML(open(currentUrl))
+
+checkData = data.at_css('average')
+
+if checkData == 'The test completed but there were no successful results.'
+  driver.find_element(:name => 'Re-run the test').click
+end
 
 $siteName.push(site)
 $loadTime.push(data.at_css('#fvLoadTime').text.strip)
