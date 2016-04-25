@@ -25,7 +25,7 @@ $cost = []
 
 $myUrl.each do |site|
 
-driver = Selenium::WebDriver.for :firefox
+driver = Selenium::WebDriver.for :firefox #easiest browser to run this test script on
 driver.navigate.to "http://webpagetest.org"
 
 driver.find_element(:id, "advanced_settings").click
