@@ -119,7 +119,7 @@ recipient = gets.chomp
 puts "What is the email address you're sending this to?"
 $recipientEmail = gets.chomp
 
-$body = "Hey #{recipient}! I ran the Web Page Performance Data Extractor for #{hash.length} URL's. The results are as follows: \n " +$stuff+ "
+$body = "Hey #{recipient}! I ran the Web Page Performance Data Extractor for #{hash.length} URL's. The results are as follows: \n\n " +$stuff+ "
 \n Sincerely, \n
 Matthew A. Johnson"
 
