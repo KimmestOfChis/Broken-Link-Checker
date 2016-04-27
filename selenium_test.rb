@@ -8,6 +8,8 @@ urlFile = File.open('urlFiles.txt', 'r')
 contents = urlFile.read
 $myUrl = contents.split(' ')
 
+startTime = Time.new
+
 puts "URL's running through this script: #{$myUrl.length}"
 
 $siteName = []
@@ -106,6 +108,10 @@ hash.each do |site, item|
  
 
 book.write '/Users/matthewjohnson/Documents/projects/404projects/firstptest.xls'
+
+endTime = Time.new
+totalTime = endTime - startTime
+puts "Data Extraction Process took #{totalTime} seconds to complete."
 
 puts "What is your email?"
 $email = gets.chomp
