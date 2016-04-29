@@ -111,7 +111,7 @@ book.write '/Users/matthewjohnson/Documents/projects/404projects/firstptest.xls'
 
 endTime = Time.new
 totalTime = endTime - startTime
-puts "Data Extraction Process took #{totalTime} seconds to complete."
+puts "Data Extraction Process took #{totalTime/60} minutes to complete."
 
 puts "What is your email?"
 $email = gets.chomp
